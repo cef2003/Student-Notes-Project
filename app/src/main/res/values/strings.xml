@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Student Notes</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="firstName">First Name:</string>
+    <string name="familyName">Family Name:</string>
+    <string name="Notes">NOTES</string>
+    <string name="cours1">I3301 :</string>
+    <string name="cours2">I3302 :</string>
+    <string name="cours3">I3303 :</string>
+    <string name="cours4">I3304 :</string>
+    <string name="cours5">I3305 :</string>
+    <string name="cours6">I3306 :</string>
+    <string name="cours7">I3350 :</string>
+    <string name="saveBtn">SAVE</string>
+    <string name="avg">Average:</string>
+    <string name="doe">Doe</string>
+    <string name="john">John</string>
+    <string name="_0_100">0 - 100</string>
+    <string name="notesBtn">Notes</string>
+</resources>
