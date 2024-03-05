@@ -1,8 +1,8 @@
 package com.example.studentnotes.database
 
+import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -11,27 +11,35 @@ import kotlinx.coroutines.launch
 class NotesViewModel(val dao: NotesDao) : ViewModel() {
     var firstName: String = ""
     var lastName: String = ""
-    var course1Str = ""
-    var course2Str = ""
-    var course3Str = ""
-    var course4Str = ""
-    var course5Str = ""
-    var course6Str = ""
-    var course7Str = ""
+    var course1Str: String = ""
+    var course2Str: String = ""
+    var course3Str: String = ""
+    var course4Str: String = ""
+    var course5Str: String = ""
+    var course6Str: String = ""
+    var course7Str: String = ""
+//    var data = arrayOf(
+//        course1Str.toFloat(), course2Str.toFloat(),
+//        course3Str.toFloat(), course4Str.toFloat(), course5Str.toFloat(),
+//        course6Str.toFloat(), course7Str.toFloat()
+//    )
     var avg: Float = 0f
-    var avgStr: String = ""
     var sum = 0f
     var counter: Int = 0
 
     val fName: LiveData<String> = dao.getFirstName().map { it }
     val lName: LiveData<String> = dao.getLastName().map { it }
-    val average: LiveData<String> = dao.getAverage().map { it.toString() }
+    val average: LiveData<Float> = dao.getAverage().map { it }
+
+    val allCoursesGrades: LiveData<List<Notes>> = dao.getAllCourses()
+    val rowsNum: LiveData<Int> = dao.getRowCount()
 
     fun addNote() {
         viewModelScope.launch {
             val note = Notes()
             note.firstName = firstName
             note.lastName = lastName
+//            val oldNotes = arrayOf(note.course1, note.course2, note.course3, note.course4, note.course5, note.course6, note.course7)
             note.course1 = course1Str.toFloat()
             note.course2 = course2Str.toFloat()
             note.course3 = course3Str.toFloat()
@@ -45,20 +53,20 @@ class NotesViewModel(val dao: NotesDao) : ViewModel() {
                 counter++
             }
             avg = sum/counter.toFloat()
-            avgStr = avg.toString()
             note.avg = avg
             dao.insert(note)
         }
     }
 
-    val allCoursesGrades: LiveData<List<Float>> = dao.getAllCourses()
-
-//    private val _allCourses: MutableLiveData<List<Float>> = MutableLiveData()
-//    val allCourses: LiveData<List<Float>> = _allCourses
-//
-//    fun getAllCourseNotes() {
-//        viewModelScope.launch {
-//            _allCourses.value = dao.getAllCourses().value?.toList()
+//    fun checkValidity(context: Context) {
+//        for(i in 0..6) {
+//            if(data[i] < 0 || data[i] > 100) {
+//                show(context, "")
+//            }
 //        }
+//    }
+//
+//    private fun show(context: Context, message: String) {
+//        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 //    }
 }

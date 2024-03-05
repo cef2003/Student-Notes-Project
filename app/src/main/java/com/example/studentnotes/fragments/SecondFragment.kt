@@ -6,24 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TableRow
-import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
-import androidx.room.InvalidationTracker
 import com.example.studentnotes.R
-import com.example.studentnotes.database.Notes
-import com.example.studentnotes.database.NotesDatabase
 import com.example.studentnotes.database.NotesViewModel
-import com.example.studentnotes.database.NotesViewModelFactory
 import com.example.studentnotes.databinding.FragmentSecondBinding
 
 class SecondFragment : Fragment() {
 
     private var _binding: FragmentSecondBinding? = null
     private val binding get() = _binding!!
+    private val PASSED = "PASSED"
+    private val FAILED = "FAILED"
+    private val REDCOLOR = "#FF0000"
+    private val GREENCOLOR = "#00FF00"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,33 +31,76 @@ class SecondFragment : Fragment() {
         val view = binding.root
         val sharedViewModel: NotesViewModel by activityViewModels()
 
-        sharedViewModel.allCoursesGrades.observe(viewLifecycleOwner) { courseGrades ->
-            val course1Grade = courseGrades[0]
-            val course2Grade = courseGrades[1]
-            val course3Grade = courseGrades[2]
-            val course4Grade = courseGrades[3]
-            val course5Grade = courseGrades[4]
-            val course6Grade = courseGrades[5]
-            val course7Grade = courseGrades[6]
-            binding.course1Grade.text = course1Grade.toString()
-            if(course1Grade >= 50) {
-                binding.status1.text = "PASSED"
-                binding.status1.setTextColor(Color.parseColor("#00FF00"))
+        val avg: LiveData<Float> = sharedViewModel.average
+        // we cannot compare avg directly to 50 because it's of type LiveData so we will observe it then compare it
+        avg.observe(viewLifecycleOwner) { avgData ->
+            if(avgData >= 50) {
+                binding.averageTV.text = avgData.toString()
+                binding.averageTV.setTextColor(Color.parseColor(GREENCOLOR))
             } else {
-                binding.status1.text = "FAILED"
-                binding.status1.setTextColor(Color.parseColor("#FF0000"))
+                binding.averageTV.text = avgData.toString()
+                binding.averageTV.setTextColor(Color.parseColor(REDCOLOR))
             }
-//            val course1GradeStr = course1Grade.toString()
-//            val course2GradeStr = course2Grade.toString()
-//            val course3GradeStr = course3Grade.toString()
-//            val course4GradeStr = course4Grade.toString()
-//            val course5GradeStr = course5Grade.toString()
-//            val course6GradeStr = course6Grade.toString()
-//            val course7GradeStr = course7Grade.toString()
         }
+
+        sharedViewModel.allCoursesGrades.observe(viewLifecycleOwner) { courseGrades ->
+            val courses = courseGrades[0]
+            val allCourses = arrayOf(
+                courses.course1,
+                courses.course2,
+                courses.course3,
+                courses.course4,
+                courses.course5,
+                courses.course6,
+                courses.course7
+            )
+            val coursesTextView = arrayOf(
+                binding.course1Grade,
+                binding.course2Grade,
+                binding.course3Grade,
+                binding.course4Grade,
+                binding.course5Grade,
+                binding.course6Grade,
+                binding.course7Grade
+            )
+            val statusTextView = arrayOf(
+                binding.status1,
+                binding.status2,
+                binding.status3,
+                binding.status4,
+                binding.status5,
+                binding.status6,
+                binding.status7,
+            )
+            for (i in 0..6) {
+                coursesTextView[i].text = allCourses[i].toString()
+                if(allCourses[i] >= 50) {
+                    statusTextView[i].text = PASSED
+                    statusTextView[i].setTextColor(Color.parseColor(GREENCOLOR))
+                } else {
+                    statusTextView[i].text = FAILED
+                    statusTextView[i].setTextColor(Color.parseColor(REDCOLOR))
+                }
+            }
+        }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Handle the back button press in the second fragment
+                requireActivity().finish() // This will exit the entire app
+            }
+        }
+
+        // Add the callback to the OnBackPressedDispatcher
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+//        binding.editBtn.setOnClickListener {
+//            view.findNavController().navigate(R.id.action_secondFragment_to_firstFragment)
+//        }
 
         binding.viewModel = sharedViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
         return view
     }
 

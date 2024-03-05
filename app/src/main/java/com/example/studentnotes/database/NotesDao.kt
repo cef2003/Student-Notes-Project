@@ -31,6 +31,11 @@ interface NotesDao {
     fun getAverage(): LiveData<Float>
 
     // get all the courses to display the notes in the third fragment
-    @Query("SELECT I3301, I3302, I3303, I3304, I3305, I3306, I3350 FROM notes_table")
-    fun getAllCourses(): LiveData<List<Float>>
+    @Query("SELECT * FROM notes_table")
+    fun getAllCourses(): LiveData<List<Notes>>
+
+    // count the rows in the table. If it's one row so when the user opens the app it should directly display
+    // the second fragment, else if there is no rows it will display the first fragment
+    @Query("SELECT COUNT(*) FROM notes_table")
+    fun getRowCount(): LiveData<Int>
 }
