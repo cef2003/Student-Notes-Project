@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.studentnotes.database.NotesDatabase
 import com.example.studentnotes.database.NotesViewModel
 import com.example.studentnotes.database.NotesViewModelFactory
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val viewModel: NotesViewModel = ViewModelProvider(this, viewModelFactory)[NotesViewModel::class.java]
 
         // check the database, if there is one row it will navigate to the second fragment directly
-        // else it will stay in the first fragment
+        // else it will stay in the first fragment, because this app is made for one student only
         val rowCounter = viewModel.rowsNum
         rowCounter.observe(this) { rowCount ->
             if(rowCount == 1) {
@@ -42,11 +43,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToSecondFragment() {
-        val fragment = SecondFragment()
-        val fragmentManager = supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+//        val fragment = SecondFragment()
+//        val fragmentManager = supportFragmentManager
+//        val transaction = fragmentManager.beginTransaction()
+//        transaction.replace(R.id.nav_host_fragment, fragment)
+//        transaction.addToBackStack(null)
+//        transaction.commit()
+        val navController = findNavController(R.id.nav_host_fragment)
+        val canNavigate = navController.currentDestination?.id != R.id.secondFragment
+        if (canNavigate) {
+            navController.navigate(R.id.action_firstFragment_to_secondFragment)
+        } else {
+
+        }
     }
 }

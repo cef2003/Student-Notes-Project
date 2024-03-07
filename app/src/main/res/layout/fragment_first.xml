@@ -10,6 +10,7 @@
     </data>
 
     <ScrollView
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,12 +19,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
                 <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:title="@string/app_name"
                     android:titleTextColor="@color/white"
                     android:background="@color/primaryColor">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
                 </androidx.appcompat.widget.Toolbar>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,14 +42,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/firstName"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"/>
+                    android:textSize="20sp"/>
                 <EditText
                     android:id="@+id/firstName"
                     android:inputType="textCapWords"
                     android:hint="@string/john"
                     android:text="@={viewModel.firstName}"
-                    android:textColorHint="@color/hintColor"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"/>
             </LinearLayout>
@@ -54,14 +60,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/familyName"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"/>
+                    android:textSize="20sp" />
                 <EditText
                     android:id="@+id/familyName"
                     android:inputType="textCapWords"
                     android:hint="@string/doe"
                     android:text="@={viewModel.lastName}"
-                    android:textColorHint="@color/hintColor"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"/>
             </LinearLayout>
@@ -72,8 +76,7 @@
                 android:textSize="20sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:padding="15dp"
-                android:textColor="@color/black"/>
+                android:padding="15dp" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,14 +85,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cours1"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"/>
+                    android:textSize="15sp" />
                 <EditText
                     android:id="@+id/cours1"
                     android:inputType="number"
                     android:hint="@string/_0_100"
                     android:text="@={viewModel.course1Str}"
-                    android:textColorHint="@color/hintColor"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"/>
             </LinearLayout>
@@ -101,14 +102,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cours2"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"/>
+                    android:textSize="15sp" />
                 <EditText
                     android:id="@+id/cours2"
                     android:inputType="number"
                     android:hint="@string/_0_100"
                     android:text="@={viewModel.course2Str}"
-                    android:textColorHint="@color/hintColor"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"/>
             </LinearLayout>
@@ -120,14 +119,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cours3"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"/>
+                    android:textSize="15sp" />
                 <EditText
                     android:id="@+id/cours3"
                     android:inputType="number"
                     android:hint="@string/_0_100"
                     android:text="@={viewModel.course3Str}"
-                    android:textColorHint="@color/hintColor"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"/>
             </LinearLayout>
@@ -139,14 +136,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cours4"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"/>
+                    android:textSize="15sp" />
                 <EditText
                     android:id="@+id/cours4"
                     android:inputType="number"
                     android:hint="@string/_0_100"
                     android:text="@={viewModel.course4Str}"
-                    android:textColorHint="@color/hintColor"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"/>
             </LinearLayout>
@@ -158,14 +153,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cours5"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"/>
+                    android:textSize="15sp" />
                 <EditText
                     android:id="@+id/cours5"
                     android:inputType="number"
                     android:hint="@string/_0_100"
                     android:text="@={viewModel.course5Str}"
-                    android:textColorHint="@color/hintColor"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"/>
             </LinearLayout>
@@ -177,14 +170,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cours6"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"/>
+                    android:textSize="15sp" />
                 <EditText
                     android:id="@+id/cours6"
                     android:inputType="number"
                     android:hint="@string/_0_100"
                     android:text="@={viewModel.course6Str}"
-                    android:textColorHint="@color/hintColor"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"/>
             </LinearLayout>
@@ -196,14 +187,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cours7"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"/>
+                    android:textSize="15sp" />
                 <EditText
                     android:id="@+id/cours7"
                     android:inputType="number"
                     android:hint="@string/_0_100"
                     android:text="@={viewModel.course7Str}"
-                    android:textColorHint="@color/hintColor"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"/>
             </LinearLayout>

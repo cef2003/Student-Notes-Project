@@ -31,6 +31,16 @@ class SecondFragment : Fragment() {
         val view = binding.root
         val sharedViewModel: NotesViewModel by activityViewModels()
 
+        val coursesTextView = arrayOf(
+            binding.course1Grade,
+            binding.course2Grade,
+            binding.course3Grade,
+            binding.course4Grade,
+            binding.course5Grade,
+            binding.course6Grade,
+            binding.course7Grade
+        )
+
         val avg: LiveData<Float> = sharedViewModel.average
         // we cannot compare avg directly to 50 because it's of type LiveData so we will observe it then compare it
         avg.observe(viewLifecycleOwner) { avgData ->
@@ -53,15 +63,6 @@ class SecondFragment : Fragment() {
                 courses.course5,
                 courses.course6,
                 courses.course7
-            )
-            val coursesTextView = arrayOf(
-                binding.course1Grade,
-                binding.course2Grade,
-                binding.course3Grade,
-                binding.course4Grade,
-                binding.course5Grade,
-                binding.course6Grade,
-                binding.course7Grade
             )
             val statusTextView = arrayOf(
                 binding.status1,
@@ -90,31 +91,20 @@ class SecondFragment : Fragment() {
                 requireActivity().finish() // This will exit the entire app
             }
         }
-
         // Add the callback to the OnBackPressedDispatcher
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
-//        binding.editBtn.setOnClickListener {
-//            view.findNavController().navigate(R.id.action_secondFragment_to_firstFragment)
-//        }
+        binding.editBtn.setOnClickListener {
+            sharedViewModel._startEdit.value = true
+            view.findNavController().navigate(R.id.action_secondFragment_to_firstFragment)
+//            requireView().visibility = View.GONE
+        }
 
         binding.viewModel = sharedViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         return view
     }
-
-//    private fun updateTableLayout(courses: List<Float>) {
-//        binding.tableLayout.removeAllViews()
-//        for(courseNote in courses) {
-//            val row = TableRow(requireContext())
-//            val textView = TextView(requireContext())
-//            textView.text = courseNote.toString()
-//            row.addView(textView)
-//            binding.tableLayout.addView(row)
-//        }
-//    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -18,4 +18,5 @@
     <string name="_0_100">0 - 100</string>
     <string name="notesBtn">Notes</string>
     <string name="editBtn">Edit</string>
+    <string name="updateBtn">UPDATE</string>
 </resources>

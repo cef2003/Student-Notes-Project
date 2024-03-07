@@ -3,6 +3,7 @@ package com.example.studentnotes.database
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -18,14 +19,14 @@ class NotesViewModel(val dao: NotesDao) : ViewModel() {
     var course5Str: String = ""
     var course6Str: String = ""
     var course7Str: String = ""
-//    var data = arrayOf(
-//        course1Str.toFloat(), course2Str.toFloat(),
-//        course3Str.toFloat(), course4Str.toFloat(), course5Str.toFloat(),
-//        course6Str.toFloat(), course7Str.toFloat()
-//    )
-    var avg: Float = 0f
-    var sum = 0f
-    var counter: Int = 0
+
+    // to ensure that it's in edit mode to apply the corresponding logic in the first fragment (check first fragment)
+    val _startEdit = MutableLiveData<Boolean>(false)
+    val startEdit: LiveData<Boolean> = _startEdit
+
+    // to check if the courses grades are valid or not (0<=grade<=100)
+    val _isValid = MutableLiveData<Boolean>(true)
+    val isValid: LiveData<Boolean> = _isValid
 
     val fName: LiveData<String> = dao.getFirstName().map { it }
     val lName: LiveData<String> = dao.getLastName().map { it }
@@ -37,9 +38,26 @@ class NotesViewModel(val dao: NotesDao) : ViewModel() {
     fun addNote() {
         viewModelScope.launch {
             val note = Notes()
+
+            val data = arrayOf(
+                course1Str.toFloat(),
+                course2Str.toFloat(),
+                course3Str.toFloat(),
+                course4Str.toFloat(),
+                course5Str.toFloat(),
+                course6Str.toFloat(),
+                course7Str.toFloat(),
+            )
+            for(i in 0..6) {
+                if(data[i] != null && (data[i] < 0|| data[i] > 100)) {
+                    _isValid.value = false
+                    return@launch
+                }
+            }
+
             note.firstName = firstName
             note.lastName = lastName
-//            val oldNotes = arrayOf(note.course1, note.course2, note.course3, note.course4, note.course5, note.course6, note.course7)
+
             note.course1 = course1Str.toFloat()
             note.course2 = course2Str.toFloat()
             note.course3 = course3Str.toFloat()
@@ -47,21 +65,35 @@ class NotesViewModel(val dao: NotesDao) : ViewModel() {
             note.course5 = course5Str.toFloat()
             note.course6 = course6Str.toFloat()
             note.course7 = course7Str.toFloat()
-            val notes = arrayOf(note.course1, note.course2, note.course3, note.course4, note.course5, note.course6, note.course7)
-            for (i in notes) {
-                sum += i
-                counter++
-            }
-            avg = sum/counter.toFloat()
-            note.avg = avg
+            val notes = mutableListOf(note.course1, note.course2, note.course3, note.course4, note.course5, note.course6, note.course7)
+
+            note.avg = calculateAverage(notes)
             dao.insert(note)
         }
     }
 
+    fun calculateAverage(grades: MutableList<Float>): Float {
+        var sum: Float = 0f
+        var counter: Int = 0
+        var avg: Float = 0f
+        for(i in grades) {
+            sum += i
+            counter++
+        }
+        avg = sum/counter.toFloat()
+        return avg
+    }
+
+    fun update(note: Notes) {
+        viewModelScope.launch {
+            dao.update(note)
+        }
+    }
+
 //    fun checkValidity(context: Context) {
-//        for(i in 0..6) {
+//        for(i in 0 until data.size) {
 //            if(data[i] < 0 || data[i] > 100) {
-//                show(context, "")
+//                show(context, "Check your grades!")
 //            }
 //        }
 //    }
